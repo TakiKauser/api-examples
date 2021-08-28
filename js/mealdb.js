@@ -6,14 +6,10 @@ const searchFood = () => {
 
     if (searchFieldText == "") {
         // please write something to display
-        // const searchResult = document.getElementById("search-result");
-        // const h5 = document.createElement("h5");
-        // h5.classList.add("text-danger", "text-center", "fw-bold");
         const errorMsg = document.getElementById("error-messages");
         errorMsg.innerHTML = `
         Type something to search, dude!!!
         `;
-        // searchResult.appendChild(h5);
     }
     else {
         // load data
@@ -36,12 +32,10 @@ const displaySearchResult = meals => {
 
     if (meals == null) {
         // show error msg here
-        // h4.classList.add("text-danger", "text-center", "fw-bold");
         const errorMsg = document.getElementById("error-messages");
         errorMsg.innerHTML = `
         Sorry, No such item in our menu!
         `;
-        // searchResult.appendChild(h4);
     }
 
     else {
