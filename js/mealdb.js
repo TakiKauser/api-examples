@@ -1,55 +1,82 @@
 const searchFood = () => {
     const searchField = document.getElementById("search-field");
     const searchFieldText = searchField.value;
-    // console.log(searchFieldText);
-
+    // clear data
     searchField.value = "";
 
-    const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchFieldText}`;
+    if (searchFieldText == "") {
+        // please write something to display
+        // const searchResult = document.getElementById("search-result");
+        // const h5 = document.createElement("h5");
+        // h5.classList.add("text-danger", "text-center", "fw-bold");
+        const errorMsg = document.getElementById("error-messages");
+        errorMsg.innerHTML = `
+        Type something to search, dude!!!
+        `;
+        // searchResult.appendChild(h5);
+    }
+    else {
+        // load data
+        const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchFieldText}`;
 
-    fetch(url)
-        .then(response => response.json())
-        .then(jsonData => displaySearchResult(jsonData.meals))
+        fetch(url)
+            .then(response => response.json())
+            .then(jsonData => displaySearchResult(jsonData.meals))
 
-    // console.log(url);
+    }
 }
 
+// display results
 const displaySearchResult = meals => {
     const searchResult = document.getElementById("search-result");
 
-    meals.forEach(meal => {
-        // console.log(meal);
-        const div = document.createElement("div");
-        div.classList.add("col");
-        div.innerHTML = `
-        <div onclick="loadMealDetail(${meal.idMeal})" class="card h-100">
-            <img src="${meal.strMealThumb}" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">${meal.strMeal}</h5>
-              <p class="card-text">${meal.strInstructions.slice(0, 250)}</p>
-            </div>
-        </div>
+    // clear data
+    // searchResult.innerHTML = ""; //not recommended
+    searchResult.textContent = "";
+
+    if (meals == null) {
+        // show error msg here
+        // h4.classList.add("text-danger", "text-center", "fw-bold");
+        const errorMsg = document.getElementById("error-messages");
+        errorMsg.innerHTML = `
+        Sorry, No such item in our menu!
         `;
-        searchResult.appendChild(div);
-    });
+        // searchResult.appendChild(h4);
+    }
+
+    else {
+        meals.forEach(meal => {
+            const div = document.createElement("div");
+            div.classList.add("col");
+            div.innerHTML = `
+            <div onclick="loadMealDetail(${meal.idMeal})" class="card h-100">
+                <img src="${meal.strMealThumb}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">${meal.strMeal}</h5>
+                  <p class="card-text">${meal.strInstructions.slice(0, 250)}</p>
+                </div>
+            </div>
+            `;
+            searchResult.appendChild(div);
+        });
+    }
 }
 
+// single meal details
 const loadMealDetail = mealID => {
-    // console.log(mealID);
     const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`;
     fetch(url)
         .then(response => response.json())
-        .then(jsonData => displayMealDetil(jsonData.meals[0]))
+        .then(jsonData => displayMealDetail(jsonData.meals[0]))
 }
 
-const displayMealDetil = (meal) => {
-    // console.log(meal);
+const displayMealDetail = (meal) => {
     const mealDetails = document.getElementById("meal-details");
 
     const div = document.createElement("div");
     div.classList.add("card");
     div.innerHTML = `
-    <div class="card"">
+    <div class="card p-3 m-5">
         <img src="${meal.strMealThumb}" class="card-img-top" alt="..." />
         <div class="card-body">
           <h5 class="card-title">${meal.strMeal}</h5>
@@ -58,6 +85,6 @@ const displayMealDetil = (meal) => {
           <a href="${meal.strYoutube}" target="_blank" class="btn btn-primary">Watch on Youtube</a>
         </div>
     </div>
-    `
+    `;
     mealDetails.appendChild(div);
 }
