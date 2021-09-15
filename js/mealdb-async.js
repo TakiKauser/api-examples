@@ -1,3 +1,14 @@
+// "Enter" key submission
+const searchButton = document.getElementById("button-search");
+const searchText = document.getElementById("search-field");
+
+searchText.addEventListener("keypress", function (event) {
+    // event.preventDefault();
+    if (event.key === "Enter") {
+        searchButton.click();
+    }
+});
+// fetch food items from API
 const searchFood = async () => {
     const searchField = document.getElementById("search-field");
     const searchFieldText = searchField.value;
